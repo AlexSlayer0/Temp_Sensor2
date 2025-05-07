@@ -19,14 +19,13 @@ const char* password = "12345678";
 */
 #define Pin_Button1 GPIO_NUM_5
 #define Pin_Button2 GPIO_NUM_3
-#define Pin_Akku GPIO_NUM_2
 
 #define MYALTITUDE 700
 
-int BoardNum{};
-
 Display myDisplay;        // Display instance             // WiFi instance
 BME280<> BMESensor;       // BME280 instance
+
+int BoardNum{};
 
 float temperature, humidity, pressure, relativePressure, altitude{};
 
@@ -73,10 +72,10 @@ void Sensor_Auslesen()
 
 void setup() 
 {
-  pinMode(Pin_Button1, INPUT_PULLUP); // Button pin
+  pinMode(Pin_Button1,INPUT); // Button pin
   attachInterrupt(digitalPinToInterrupt(Pin_Button1), handleInterrupt, FALLING); // Interrupt on button press
 
-  pinMode(Pin_Button2, INPUT_PULLUP); // Button pin
+  pinMode(Pin_Button2,INPUT); // Button pin
   attachInterrupt(digitalPinToInterrupt(Pin_Button2), handleInterrupt2, FALLING); // Interrupt on button press
 
   Serial.begin(115200);
@@ -93,6 +92,8 @@ void setup()
   // Print the ESP32's IP address
   Serial.print("ESP32 Web Server's IP address: ");
   Serial.println(WiFi.localIP());
+
+
   /*  
   // Starte den Access Point
   WiFi.softAP(ssid, password);
@@ -136,7 +137,6 @@ void loop()
   {
   case 0:
     myDisplay.Display_Werte(temperature, humidity, pressure);
-    /* code */
     break;
   case 1:
     myDisplay.TemperatureBoard(temperature);
