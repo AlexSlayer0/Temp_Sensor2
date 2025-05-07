@@ -18,7 +18,7 @@ const char* ssid = "ESP32-AP";
 const char* password = "12345678";  
 */
 #define Pin_Button1 GPIO_NUM_5
-#define Pin_Button2 GPIO_NUM_6
+#define Pin_Button2 GPIO_NUM_3
 #define Pin_Akku GPIO_NUM_2
 
 #define MYALTITUDE 700
