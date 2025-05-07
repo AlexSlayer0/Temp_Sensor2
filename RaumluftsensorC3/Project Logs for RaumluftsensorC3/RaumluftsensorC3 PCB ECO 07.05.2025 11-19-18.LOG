@@ -1,0 +1,11 @@
+Removed Pin From Net: NetName=GND Pin=R1-1
+Removed Pin From Net: NetName=GND Pin=R2-1
+Removed Pin From Net: NetName=NetR1_2 Pin=S1-2
+Removed Member From Class: ClassName=RaumluftsensorC3 Member=R2
+Added Pin To Net: NetName=NetMOD1_1 Pin=R1-1
+Added Pin To Net: NetName=GND Pin=S1-2
+Added Pin To Net: NetName=NetR1_2 Pin=S1-3
+Added Pin To Net: NetName=GND Pin=S2-2
+Added Pin To Net: NetName=NetR1_2 Pin=S2-3
+Added Pin To Net: NetName=NetR1_2 Pin=U1-2
+Added Pin To Net: NetName=NetR1_2 Pin=U1-4
