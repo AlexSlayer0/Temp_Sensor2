@@ -1,0 +1,22 @@
+Added Component: Designator=R2(R_0207/RM4)
+Add component (AddParameter): Name = "LatestRevisionDate"; Value = "07-Sep-2019"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Published"; Value = "21-Feb-2011"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Usage"; Value = "only permitted for non-commercial purposes at HTL I Innsbruck"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "10K"; VariantName = "[No Variations]"
+Added Component: Designator=TA2(SW_DTSM-61NT/R - 1x2)
+Add component (AddParameter): Name = "LatestRevisionDate"; Value = "07-Sep-2019"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Published"; Value = "29-Mar-2017"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Publisher"; Value = "Michael Kupfner"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SimulationModellSource"; Value = "<No SimModell found so far>"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Usage"; Value = "only permitted for non-commercial purposes at HTL I Innsbruck"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=GND Pin=R2-1
+Added Pin To Net: NetName=NetR2_2 Pin=R2-2
+Added Pin To Net: NetName=NetR2_2 Pin=TA2-1
+Added Pin To Net: NetName=NetR2_2 Pin=TA2-1
+Added Net: Name=NetR2_2
+Added Pin To Net: NetName=NetTA2_2 Pin=TA2-2
+Added Pin To Net: NetName=NetTA2_2 Pin=TA2-2
+Added Pin To Net: NetName=NetTA2_2 Pin=U1-2
+Added Net: Name=NetTA2_2
+Added Member To Class: ClassName=RaumluftsensorC3 Member=Component R2 10K
+Added Member To Class: ClassName=RaumluftsensorC3 Member=Component TA2 Mikrotaster 1x2

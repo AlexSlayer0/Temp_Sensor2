@@ -1,0 +1,48 @@
+Added Component: Designator=MOD1(BME280)
+Add component (AddParameter): Name = "LatestRevisionDate"; Value = "06-Jan-2018"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Published"; Value = "06-Jan-2018"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Publisher"; Value = "Michael Kupfner"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Usage"; Value = "only permitted for non-commercial purposes at HTL I Innsbruck"; VariantName = "[No Variations]"
+Added Component: Designator=P1(HDR1X4)
+Add component (AddParameter): Name = "LatestRevisionDate"; Value = "17-Jul-2002"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "LatestRevisionNote"; Value = "Re-released for DXP Platform."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Publisher"; Value = "Altium Limited"; VariantName = "[No Variations]"
+Added Component: Designator=R1(R_0207/RM4)
+Add component (AddParameter): Name = "LatestRevisionDate"; Value = "07-Sep-2019"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Published"; Value = "21-Feb-2011"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Usage"; Value = "only permitted for non-commercial purposes at HTL I Innsbruck"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "10K"; VariantName = "[No Variations]"
+Added Component: Designator=TA1(SW_DTSM-61NT/R - 1x2)
+Add component (AddParameter): Name = "LatestRevisionDate"; Value = "07-Sep-2019"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Published"; Value = "29-Mar-2017"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Publisher"; Value = "Michael Kupfner"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SimulationModellSource"; Value = "<No SimModell found so far>"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Usage"; Value = "only permitted for non-commercial purposes at HTL I Innsbruck"; VariantName = "[No Variations]"
+Added Component: Designator=U1(PCBComponent_1)
+Added Pin To Net: NetName=GND Pin=MOD1-2
+Added Pin To Net: NetName=GND Pin=P1-2
+Added Pin To Net: NetName=GND Pin=R1-1
+Added Pin To Net: NetName=GND Pin=U1-9
+Added Net: Name=GND
+Added Pin To Net: NetName=NetMOD1_1 Pin=MOD1-1
+Added Pin To Net: NetName=NetMOD1_1 Pin=P1-1
+Added Pin To Net: NetName=NetMOD1_1 Pin=U1-10
+Added Net: Name=NetMOD1_1
+Added Pin To Net: NetName=NetMOD1_3 Pin=MOD1-3
+Added Pin To Net: NetName=NetMOD1_3 Pin=P1-3
+Added Pin To Net: NetName=NetMOD1_3 Pin=U1-6
+Added Net: Name=NetMOD1_3
+Added Pin To Net: NetName=NetMOD1_4 Pin=MOD1-4
+Added Pin To Net: NetName=NetMOD1_4 Pin=P1-4
+Added Pin To Net: NetName=NetMOD1_4 Pin=U1-5
+Added Net: Name=NetMOD1_4
+Added Pin To Net: NetName=NetR1_2 Pin=R1-2
+Added Pin To Net: NetName=NetR1_2 Pin=TA1-1
+Added Pin To Net: NetName=NetR1_2 Pin=TA1-1
+Added Net: Name=NetR1_2
+Added Pin To Net: NetName=NetTA1_2 Pin=TA1-2
+Added Pin To Net: NetName=NetTA1_2 Pin=TA1-2
+Added Pin To Net: NetName=NetTA1_2 Pin=U1-4
+Added Net: Name=NetTA1_2
+Added Class: Name=RaumluftsensorC3
+Added Room: Name=RaumluftsensorC3
