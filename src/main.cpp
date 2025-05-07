@@ -1,82 +1,58 @@
+#include <Arduino.h>
 #include <Wire.h>
-#include <BME280_t.h>         // Lightweight BME280 library
-#include <U8g2lib.h>          // OLED library
+#include <BME280_t.h>          // Lightweight BME280 library
+#include <U8g2lib.h>
+#include <time.h>          
+#include "Display.h"          // Display functions
+#include <WiFi.h>
+#include <ESPAsyncWebServer.h>
+#include <SPIFFS.h> 
+#include "HTML.h"
 
-#define I2C_SDA 4             // ESP32-C3: SDA pin
-#define I2C_SCL 5             // ESP32-C3: SCL pin
-#define MYALTITUDE 700        // Altitude in meters for relative pressure
 
-// Sensor instance
-BME280<> BMESensor;
+const char* ssid = "Netzwerk1";
+const char* password = "derSchiechtl098";
 
-// OLED Display: 128x64 SSD1306 I2C
-U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2
-(
-  U8G2_R0, /* reset=*/ U8X8_PIN_NONE
-);
+/*
+const char* ssid = "ESP32-AP";
+const char* password = "12345678";  
+*/
+#define Pin_Button1 GPIO_NUM_5
+#define Pin_Button2 GPIO_NUM_6
+#define Pin_Akku GPIO_NUM_2
 
-float temperature, humidity, pressure, relativePressure, altitude;
+#define MYALTITUDE 700
 
-// -- Draw custom minimalist icons --
-void drawTempIcon(int x, int y) 
+int BoardNum{};
+
+Display myDisplay;        // Display instance             // WiFi instance
+BME280<> BMESensor;       // BME280 instance
+
+float temperature, humidity, pressure, relativePressure, altitude{};
+
+AsyncWebServer server(80);
+
+void IRAM_ATTR handleInterrupt() 
 {
-  u8g2.drawCircle(x, y, 3);         // bulb
-  u8g2.drawVLine(x, y - 8, 5);      // stem
+  BoardNum++;
+  if (BoardNum > 4) 
+  {
+    BoardNum = 0; 
+  }
 }
-
-void drawHumidityIcon(int x, int y) 
+void IRAM_ATTR handleInterrupt2() 
 {
-  u8g2.drawTriangle(x, y - 3, x - 4, y + 5, x + 4, y + 5); // water droplet shape
+  BoardNum--;
+  if (BoardNum < 0) 
+  {
+    BoardNum = 3; 
+  }
 }
-
-void drawPressureIcon(int x, int y) 
-{
-  u8g2.drawFrame(x - 3, y - 3, 6, 6); // box
-  u8g2.drawHLine(x - 2, y, 4);        // horizontal bar
-}
-
-
-
-void Display_Werte() 
-{
-  u8g2.clearBuffer();
-
-  // Header
-  u8g2.setFont(u8g2_font_7x14B_tf);  // Bold clean title font
-  u8g2.setCursor(24, 13);
-  u8g2.print("BME280 Dashboard");
-
-  u8g2.drawHLine(0, 15, 128);  // Divider line
-
-  // Set readable larger font for values
-  u8g2.setFont(u8g2_font_5x8_tf);
-
-  int lineY = 30;
-  int lineSpacing = 15;
-
-  // Temperature
-  drawTempIcon(5, lineY - 4);
-  u8g2.setCursor(20, lineY);
-  u8g2.printf("Temp:     %.1f C", temperature);
-  lineY += lineSpacing;
-
-  // Humidity
-  drawHumidityIcon(6, lineY - 5);
-  u8g2.setCursor(20, lineY);
-  u8g2.printf("Humidity: %.1f %%", humidity);
-  lineY += lineSpacing;
-
-  // Pressure
-  drawPressureIcon(6, lineY - 5);
-  u8g2.setCursor(20, lineY);
-  u8g2.printf("Pressure: %.1f hPa", pressure);
-
-  u8g2.sendBuffer();
-}
-
 
 void Sensor_Auslesen() 
 {
+  BMESensor.refresh();
+
   temperature = BMESensor.temperature;
   humidity = BMESensor.humidity;
   pressure = BMESensor.pressure / 100.0F; // Pa → hPa
@@ -91,29 +67,89 @@ void Sensor_Auslesen()
   Serial.printf("Altitude:    %.1f m\n", altitude);
   Serial.println("----------------------");
 
-  Display_Werte();  // Show updated info on display
 }
+
+// ---------------------------------------------------------------------------
 
 void setup() 
 {
+  pinMode(Pin_Button1, INPUT_PULLUP); // Button pin
+  attachInterrupt(digitalPinToInterrupt(Pin_Button1), handleInterrupt, FALLING); // Interrupt on button press
+
+  pinMode(Pin_Button2, INPUT_PULLUP); // Button pin
+  attachInterrupt(digitalPinToInterrupt(Pin_Button2), handleInterrupt2, FALLING); // Interrupt on button press
+
   Serial.begin(115200);
   delay(1000);
 
+  
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println("Connecting to WiFi...");
+  }
+  Serial.println("Connected to WiFi");
+
+  // Print the ESP32's IP address
+  Serial.print("ESP32 Web Server's IP address: ");
+  Serial.println(WiFi.localIP());
+  /*  
+  // Starte den Access Point
+  WiFi.softAP(ssid, password);
+
+  // IP-Adresse des ESP im AP-Modus anzeigen
+  IPAddress IP = WiFi.softAPIP();
+  Serial.print("Access Point IP address: ");
+  Serial.println(IP);
+  */
+
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest* request){
+    request->send(200, "text/html", index_html);
+  });
+
+  server.on("/sensor-data", HTTP_GET, [](AsyncWebServerRequest* request){
+
+    String jsonResponse = "{\"temperature\": " + String(temperature, 1) + 
+                          ", \"humidity\": " + String(humidity, 1) + 
+                          ", \"pressure\": " + String(pressure, 1) + "}";
+    request->send(200, "application/json", jsonResponse);
+  });
+
+  server.begin();
+
   Wire.begin();
 
-  if (!BMESensor.begin()) {
+  if (!BMESensor.begin()) 
+  {
     Serial.println("BME280 failed!");
     while (true);
   }
 
-  u8g2.begin();
-  u8g2.enableUTF8Print();
-
+  myDisplay.Init();  // Initialize display
   Serial.println("BME280 + OLED initialized");
 }
 
-void loop() {
-  BMESensor.refresh();     // Update sensor data
-  Sensor_Auslesen();       // Print and display
-  delay(2000);             // Delay between reads
+void loop() 
+{
+
+  switch (BoardNum)
+  {
+  case 0:
+    myDisplay.Display_Werte(temperature, humidity, pressure);
+    /* code */
+    break;
+  case 1:
+    myDisplay.TemperatureBoard(temperature);
+    break;
+  case 2:
+    myDisplay.HumidityBoard(humidity);
+    break;
+  case 3:
+    myDisplay.PressureBoard(pressure);
+    break;
+  default:
+    break;
+  }
+  Sensor_Auslesen();
+  delay(100);
 }
